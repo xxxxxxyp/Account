@@ -1,0 +1,49 @@
+# Byte-compiled / caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Editor/IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# SQLite DB and backups
+data/*.db
+data/backups/
+*.db
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Logs and runtime files
+*.log
+*.pid
+*.sock
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Python test / coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# PyInstaller
+*.spec
+
+# optionally include large files
+# *.zip
+# *.tar.gz

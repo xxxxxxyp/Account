@@ -1,0 +1,5 @@
+PySide6>=6.0
+# 可选：用于图表
+matplotlib>=3.0
+# 若想使用 ORM 可加：
+# sqlalchemy>=1.4
