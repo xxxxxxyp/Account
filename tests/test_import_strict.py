@@ -9,7 +9,7 @@ from data.backup_importer import import_csv_strict, parse_csv_preview
 from models.category import Category
 from models.account_record import AccountRecord
 # use relative import since this test module lives inside the tests package/directory
-from .utils_id_for_tests import gen_id_simple
+from utils_id_for_tests import gen_id_simple
 
 def _write_csv(path, rows, header=None):
     with open(path, "w", encoding="utf-8", newline="") as fh:
