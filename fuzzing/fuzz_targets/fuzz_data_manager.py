@@ -93,13 +93,17 @@ def TestOneInput(data):
         # Clean up
         dm.close()
         
-    except (ValueError, TypeError, AttributeError) as e:
+    except (ValueError, TypeError, AttributeError, KeyError) as e:
         # Expected exceptions - these are OK
+        pass
+    except (sqlite3.Error, OSError, IOError) as e:
+        # Database and I/O exceptions are expected with fuzzed data
         pass
     except Exception as e:
         # Unexpected exceptions - might indicate bugs
-        # But don't raise here as temp directory needs cleanup
-        print(f"Unexpected exception: {type(e).__name__}: {e}")
+        # Log but don't raise as temp directory needs cleanup
+        import sys
+        print(f"Unexpected exception: {type(e).__name__}: {e}", file=sys.stderr)
     finally:
         # Always clean up temp directory
         try:

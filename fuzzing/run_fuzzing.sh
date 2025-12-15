@@ -28,9 +28,17 @@ run_fuzz_target() {
     mkdir -p "corpus/$name"
     
     # Run fuzzing with timeout
+    # Note: timeout returns 124 on timeout, which is expected
     timeout ${duration}s python3 "$target" \
         -atheris_runs=1000000 \
-        "corpus/$name" 2>&1 | tee "logs/${name}.log" || true
+        "corpus/$name" 2>&1 | tee "logs/${name}.log"
+    
+    exit_code=$?
+    if [ $exit_code -eq 124 ]; then
+        echo "Fuzzing timed out (expected)"
+    elif [ $exit_code -ne 0 ]; then
+        echo "Warning: Fuzzing exited with code $exit_code"
+    fi
     
     echo ""
     echo "完成: $name"

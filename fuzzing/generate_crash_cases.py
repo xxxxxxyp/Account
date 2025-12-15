@@ -246,15 +246,23 @@ def test_case_8_sql_injection():
         
         try:
             results = dm.query_records(order_by=malicious_order_by)
-            print("⚠️  查询执行了（可能存在SQL注入风险）")
             
-            # Check if table still exists
-            dm.driver.execute("SELECT COUNT(*) FROM records")
-            print("✓ records表仍然存在，SQL注入被阻止")
+            # Verify table integrity after query
+            try:
+                cursor = dm.driver.execute("SELECT COUNT(*) FROM records")
+                count = cursor.fetchone()
+                print("✓ records表仍然存在，SQL注入被阻止")
+                print(f"  (查询执行但表完整，记录数: {count[0]})")
+            except Exception as integrity_error:
+                print(f"⚠️  表完整性检查失败: {integrity_error}")
             
         except Exception as e:
-            print(f"查询失败: {type(e).__name__}: {e}")
-            print("✓ SQL注入被阻止（查询失败）")
+            error_msg = str(e)
+            if "one statement at a time" in error_msg.lower():
+                print(f"✓ SQL注入被阻止: {type(e).__name__}")
+                print(f"  SQLite安全特性阻止了多语句执行")
+            else:
+                print(f"查询失败: {type(e).__name__}: {e}")
         
         dm.close()
         

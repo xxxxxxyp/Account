@@ -50,16 +50,21 @@ def TestOneInput(data):
         num_records = fdp.ConsumeIntInRange(0, 10)
         for i in range(num_records):
             try:
+                # Generate amount, handling special float values
+                raw_amount = fdp.ConsumeFloat()
+                # Use raw float to test edge cases (inf, nan, etc)
+                amount = raw_amount if fdp.ConsumeBool() else abs(raw_amount)
+                
                 record = AccountRecord(
                     id=fdp.ConsumeUnicodeNoSurrogates(10),
                     type=fdp.PickValueInList(["INCOME", "EXPENDITURE", fdp.ConsumeUnicodeNoSurrogates(10)]),
-                    amount=abs(fdp.ConsumeFloat()),
+                    amount=amount,
                     date=fdp.ConsumeUnicodeNoSurrogates(30),
                     category_id=fdp.ConsumeUnicodeNoSurrogates(10) if fdp.ConsumeBool() else None,
                     remark=fdp.ConsumeUnicodeNoSurrogates(50) if fdp.ConsumeBool() else None
                 )
                 dm.records.append(record)
-            except:
+            except (ValueError, TypeError):
                 pass
         
         # Create QueryService

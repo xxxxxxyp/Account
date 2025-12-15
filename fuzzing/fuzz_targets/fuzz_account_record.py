@@ -27,7 +27,6 @@ def TestOneInput(data):
         record_type = fdp.ConsumeUnicodeNoSurrogates(20)
         
         # Try to consume a float, might be invalid
-        amount_bytes = fdp.ConsumeBytes(8)
         try:
             amount = float(fdp.ConsumeFloat())
         except:
