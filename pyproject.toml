@@ -1,0 +1,23 @@
+[tool.mypy]
+# 基础配置
+python_version = "3.9"  # 匹配你的Python版本
+strict = true           # 开启严格模式（强制所有代码标注类型）
+warn_unused_configs = true
+
+# 项目目录（指定要检查的包）
+packages = ["src", "tests"]
+
+
+
+# 第三方库兼容（PySide6部分模块无完整类型，放宽检查）
+[[tool.mypy.overrides]]
+module = "PySide6.*"
+ignore_missing_imports = false  # 若仍报错，可临时设为true
+warn_unused_ignores = false
+
+# 类型检查规则微调（适配你的项目）
+warn_return_any = true          # 禁止返回Any类型
+warn_unused_variables = true    # 检测未使用的变量（补充Pylint）
+warn_no_return = true           # 检测无返回值的函数（如仅抛异常）
+disallow_untyped_defs = true    # 禁止无类型标注的函数/方法
+disallow_incomplete_defs = true # 禁止不完整的类型标注
