@@ -41,6 +41,12 @@ Thumbs.db
 htmlcov/
 .pytest_cache/
 
+# Fuzzing artifacts
+fuzzing/corpus/
+fuzzing/logs/
+fuzzing/output/
+fuzzing/crashes/*_crash_*
+
 # PyInstaller
 *.spec
 
