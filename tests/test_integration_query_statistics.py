@@ -16,6 +16,9 @@ from models.account_record import AccountRecord
 from models.category import Category
 from utils_id_for_tests import gen_id_simple
 
+# Constants for floating-point comparison tolerance
+FLOAT_TOLERANCE = 0.01
+
 
 @pytest.fixture
 def setup_integration_db(tmp_path):
@@ -153,7 +156,8 @@ class TestQueryStatisticsIntegration:
         
         # Step 1: Query October Week 2 records (Oct 10-16)
         week2_records = qs.query_by_date("2025-10-10T00:00:00", "2025-10-16T23:59:59")
-        assert len(week2_records) == 5  # r5, r6, r7, r8, r9 (r9 is on Oct 16)
+        # Records in range: r5 (Oct 10), r6 (Oct 11), r7 (Oct 12), r8 (Oct 15), r9 (Oct 16)
+        assert len(week2_records) == 5
         
         # Step 2: Sort records by date (ascending)
         sorted_records = qs.sort_records(week2_records, descending=False)
@@ -288,7 +292,7 @@ class TestEndToEndWorkflow:
         
         # All categories should match
         for cat_id in category_from_query:
-            assert abs(category_from_query[cat_id] - category_from_stats[cat_id]) < 0.01
+            assert abs(category_from_query[cat_id] - category_from_stats[cat_id]) < FLOAT_TOLERANCE
         
         # Verify time series consistency
         daily_series = stats.timeseries(period="day")
@@ -298,7 +302,7 @@ class TestEndToEndWorkflow:
             daily_from_query[day_key] = daily_from_query.get(day_key, 0) + r.amount
         
         for day in daily_series:
-            assert abs(daily_series[day] - daily_from_query[day]) < 0.01
+            assert abs(daily_series[day] - daily_from_query[day]) < FLOAT_TOLERANCE
     
     def test_edge_case_empty_queries_with_statistics(self, setup_integration_db):
         """
