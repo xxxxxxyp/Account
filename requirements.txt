@@ -1,0 +1,11 @@
+# Core dependencies
+PySide6>=6.0
+
+# Optional: for charts/visualization
+matplotlib>=3.0
+
+# Testing dependencies
+pytest>=7.0
+
+# Fuzzing dependencies (for fuzzing tests)
+atheris>=3.0
