@@ -6,6 +6,7 @@ matplotlib>=3.0
 
 # Testing dependencies
 pytest>=7.0
+pytest-cov>=4.0
 
 # Fuzzing dependencies (for fuzzing tests)
 atheris>=3.0
